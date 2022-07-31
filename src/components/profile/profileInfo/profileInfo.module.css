@@ -1,0 +1,75 @@
+.profilePhoto {
+  width: 300px;
+}
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+.profilePhotoContainer {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.profileDataContainer {
+  padding: 40px;
+}
+.aboutProfile {
+  flex-direction: column;
+}
+.nameAndAbout {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.fullName {
+  font-size: 34px;
+}
+.aboutMe {
+  font-size: 18px;
+  font-weight: bold;
+}
+.contacts {
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: bold;
+}
+a {
+  color: #fff;
+}
+.social {
+  font-size: 19px;
+}
+.status {
+  font-size: 20px;
+  color: cadetblue;
+}
+.contactsValue {
+  padding-left: 10px;
+}
+.editForm {
+  display: flex;
+  flex-direction: column;
+}
+.editInput {
+  display: flex;
+  flex-direction: column;
+}
+.editInput input,
+select {
+  height: 30px;
+}
+.editButton {
+  display: flex;
+  padding: 5px 10px;
+}
+.editInput input:hover {
+  opacity: 0.7;
+}
+.editInput input:focus {
+  border: none;
+}
+.error{
+  color:red;
+  font-size: 15px;
+}

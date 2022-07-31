@@ -1,0 +1,7 @@
+.dialog{
+  color: #fff;
+}
+.dialog:focus{
+  color: gold;
+  
+}
