@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import cls from './sideBar.module.css';
 
-export const SideBar = () => {
+export const SideBar:React.FC = () => {
     return (
         <nav className={cls.nav} >
             <ul>
                 <li>
-                    <Link to='/profile' exact className={cls.item}> Profile </Link>
+                    <Link to='/profile' className={cls.item}> Profile </Link>
                 </li>
                 <li>
                     <Link to='/dialogs' className={cls.item} > Messages </Link>

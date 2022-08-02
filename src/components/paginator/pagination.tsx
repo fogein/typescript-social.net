@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import cls from '../users/users.module.css';
 import cn from 'classnames';
+import cls from './../users/users.module.css'
 
-export const Pagination = ({ totalUsersCount, pageSize, onPageChanged, currentPage, portionSize = 10 }) => {
+type Props = {
+  totalUsersCount: number
+  pageSize: number
+  currentPage: number
+  portionSize?: number
+  onPageChanged: (pageNumber:number) => void
+}
+
+export const Pagination:React.FC<Props> = ({ totalUsersCount, pageSize, onPageChanged, currentPage, portionSize = 10 }) => {
 
   let pagesCount = Math.ceil(totalUsersCount / pageSize);
 
   useEffect(() => setPortionNumber(Math.ceil(currentPage / portionSize))
     , [currentPage, portionSize]);
 
-  let pages = [];
-  
+  let pages:Array<number> = []
+
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i)
   }
@@ -27,8 +35,8 @@ export const Pagination = ({ totalUsersCount, pageSize, onPageChanged, currentPa
       {pages
         .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
         .map(p => {
-          return <span onClick={() => onPageChanged(p)} 
-          className={cn({[cls.selected]: currentPage === p},cls.pages)}>{p}</span>
+          return <span onClick={() => onPageChanged(p)}
+            className={cn({ [cls.selected]: currentPage === p }, cls.pages)}>{p}</span>
         })}
 
       {

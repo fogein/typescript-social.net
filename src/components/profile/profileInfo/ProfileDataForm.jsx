@@ -1,20 +1,18 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
-import { getProfile, updateProfile } from '../../../redux/reducers/profileReducer'
+import { updateProfile } from '../../../redux/reducers/profileReducer.ts'
 import cls from './profileInfo.module.css'
 
-export const ProfileDataForm = ({ setEditMode, profile, updateStatus, status }) => {
+export const ProfileDataForm = ({ setEditMode, profile }) => {
 
   const dispatch = useDispatch()
 
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    dispatch(updateProfile(data))
-    setTimeout(() => {
-      dispatch(getProfile(profile.userId))
-      setEditMode(false)
+    dispatch(updateProfile(data,profile.userId))
+    setEditMode(false)
 
-    })
+
   }
 
   return <div className={cls.aboutProfile}>

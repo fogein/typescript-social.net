@@ -3,9 +3,22 @@ import cls from './users.module.css';
 import userPhoto from '../../assets/images/user.png';
 import { Link } from 'react-router-dom';
 import { Pagination } from '../paginator/pagination';
+import { UsersType } from '../../types/types';
 
 
-export const Users = (props) => {
+type UserType = {
+  totalUsersCount: number
+  pageSize: number
+  onPageChanged: (pageNumber: number) => void
+  currentPage: number
+  users: Array<UsersType>
+  followingProgress: Array<number>
+  unfollowingUser:(userId:number) => void
+  followingUser:(userId:number) => void
+
+}
+
+export const Users: React.FC<UserType> = (props) => {
 
 
 
@@ -16,7 +29,7 @@ export const Users = (props) => {
         pageSize={props.pageSize}
         onPageChanged={props.onPageChanged}
         currentPage={props.currentPage}
-        />
+      />
       {
         props.users.map(({ id, photos, followed, name, status }) => {
           return <div key={id} className={cls.container}>

@@ -1,26 +1,31 @@
-import React  from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { login } from '../../redux/reducers/authReducer';
+import { AppStateType } from '../../redux/store';
+
+type DataType = {
+  email: string
+  password: string
+  rememberMe: boolean
+  captcha: string
+}
 
 
-
-export const Login = () => {
+export const Login: React.FC = () => {
   const dispatch = useDispatch()
-  const auth = useSelector((state) => state.auth.isAuth)
-  const errorAuth = useSelector((state) => state.auth.errorText)
-  const captcha = useSelector((state) => state.auth.captchaUrl)
+  const auth = useSelector((state: AppStateType) => state.auth.isAuth)
+  const errorAuth = useSelector((state: AppStateType) => state.auth.errorText)
+  const captcha = useSelector((state: AppStateType) => state.auth.captchaUrl)
 
 
   const { register, setError, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
-    let email = data.email
-    let password = data.password
-    let rememberMe = data.rememberMe
-    let captcha = data.captcha
-    dispatch(login(email, password, rememberMe,captcha))
+
+
+  const onSubmit: SubmitHandler<DataType> = ({ email, password, rememberMe, captcha }) => {
+    dispatch(login(email, password, rememberMe, captcha))
   }
 
   React.useEffect(() => {
@@ -37,6 +42,7 @@ export const Login = () => {
 
     <>
       <h1>Login</h1>
+      {/* @ts-ignore */}
       <form onSubmit={handleSubmit(onSubmit)}>
 
         <div>
@@ -44,20 +50,20 @@ export const Login = () => {
           {errors.email && <span> This field is required</span>}
         </div>
         <div> <input type="password" placeholder='password'{...register("password", { required: true })} />
-          { errorAuth!==''
-          ? 
-          errors.password &&<span> {errorAuth}</span>
-          :
-          errors.password && <span> This field is required</span>
+          {errorAuth !== ''
+            ?
+            errors.password && <span> {errorAuth}</span>
+            :
+            errors.password && <span> This field is required</span>
           }
         </div>
 
         <div>
           {
-          captcha !== '' && <img src={captcha} alt="Captcha" />
+            captcha !== '' && <img src={captcha} alt="Captcha" />
           }
           {
-          captcha !== '' && <input type="captcha" placeholder='captcha'{...register("captcha", { required: true })} /> 
+            captcha !== '' && <input type="captcha" placeholder='captcha'{...register("captcha", { required: true })} />
           }
         </div>
 

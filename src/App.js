@@ -6,7 +6,7 @@ import { Login } from './components/login/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { Header } from './components/header/header';
 import { useEffect } from 'react';
-import { initializeApp } from './redux/reducers/appReducer';
+import { initializeApp } from './redux/reducers/appReducer.ts';
 import { Preloader } from './components/preloader/preloader';
 
 

@@ -2,12 +2,17 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cls from './header.module.css'
-import { logout } from './../../redux/reducers/authReducer';
+import { logout } from '../../redux/reducers/authReducer';
+import { AppStateType } from '../../redux/store';
 
-export const Header = (props) => {
+type PropsType = {
+
+}
+
+export const Header:React.FC<PropsType> = (props) => {
   const dispatch = useDispatch()
-  const login = useSelector((state) => state.auth.login)
-  const isAuth = useSelector((state) => state.auth.isAuth)
+  const login = useSelector((state:AppStateType) => state.auth.login)
+  const isAuth = useSelector((state:AppStateType) => state.auth.isAuth)
 
  
   const logoutBut = () => {

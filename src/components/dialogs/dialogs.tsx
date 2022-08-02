@@ -2,10 +2,16 @@ import React from "react";
 import cls from "./dialogs.module.css";
 import { DialogItem } from "./dialogItem/dialogItem";
 import { Message } from "./message/message";
-import { useState } from "react";
+import { DialogType, MessageType } from "../../redux/reducers/dialogsReducer";
+import { DialogsInput } from "./DialogInput/DialogInput";
 
+type PropsType = {
+  dialogs: Array<DialogType>
+  messages: Array<MessageType>
+  sendMessage: (message: string) => void
+}
 
-export const Dialogs = (props) => {
+export const Dialogs: React.FC<PropsType> = (props) => {
 
 
   return (
@@ -27,25 +33,3 @@ export const Dialogs = (props) => {
   );
 };
 
-const DialogsInput = (props) => {
-  const [message, setMessage] = useState('')
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    props.sendMessage(message)
-    setMessage('')
-
-  }
-  const onChangeHandler = (e) => {
-    let text = e.target.value
-    setMessage(text)
-  }
-
-  return (
-    <form className={cls.form} onSubmit={onSubmit}>
-      <input className={cls.inpur} onChange={onChangeHandler} value={message} type="text" placeholder='Enter your message' />
-      <button>Send</button>
-    </form>
-
-  )
-}
