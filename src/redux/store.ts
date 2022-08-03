@@ -3,21 +3,25 @@ import { dialogsReducer } from "./reducers/dialogsReducer";
 import { profileReducer } from "./reducers/profileReducer";
 import { usersReducer } from "./reducers/usersReducer";
 import { appReducer } from "./reducers/appReducer";
-import { authReducer } from './reducers/authReducer';
-import thunkMiddleware from "redux-thunk"
+import { authReducer } from "./reducers/authReducer";
+import thunkMiddleware from "redux-thunk";
 
 const reducers = combineReducers({
-  profilePage:profileReducer,
-  dialogsPage:dialogsReducer,
-  usersPage:usersReducer,
-  auth:authReducer,
-  app:appReducer
+  profilePage: profileReducer,
+  dialogsPage: dialogsReducer,
+  usersPage: usersReducer,
+  auth: authReducer,
+  app: appReducer,
 });
 
-type RootReducerType = typeof reducers
-export type AppStateType = ReturnType<RootReducerType>
+type RootReducerType = typeof reducers;
+export type AppStateType = ReturnType<RootReducerType>;
 
+type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never;
 
-export const store = createStore(reducers,applyMiddleware(thunkMiddleware));
+export type ActionTypesFromStore
+<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropertiesTypes<T>>;
+
+export const store = createStore(reducers, applyMiddleware(thunkMiddleware));
 // @ts-ignore
-window.store = store
+window.store = store;

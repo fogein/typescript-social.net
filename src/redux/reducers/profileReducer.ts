@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { profileApi } from "../../api/api";
+import { profileApi } from "../../api/profileApi";
 import { PhotosType, PostsType, ProfileType } from "../../types/types";
 import { AppStateType } from "../store";
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { getUsersThunkCreator, setCurrentPage, followingUser, unfollowingUser } from '../../redux/reducers/usersReducer';
+import { getUsersThunkCreator, followingUser, unfollowingUser } from '../../redux/reducers/usersReducer';
 import React from 'react'
 import { Users } from './users';
 import { Preloader } from '../preloader/preloader';
@@ -18,7 +18,6 @@ type MapStateToPropsType = {
 }
 type MapDispatchToPropsType = {
   getUsers: (currentPage: number, pageSize: number) => void
-  setCurrentPage: (pageNumber: number) => void
   unfollowingUser: (userId: number) => void
   followingUser: (userId: number) => void
 }
@@ -38,7 +37,6 @@ class UsersContainer extends React.Component<PropsType> {
   }
 
   onPageChanged = (pageNumber: number) => {
-    this.props.setCurrentPage(pageNumber);
     this.props.getUsers(pageNumber, this.props.pageSize)
   }
 
@@ -72,6 +70,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 
 export const UsersContainerComponent = compose(
   connect<MapStateToPropsType, MapDispatchToPropsType,OwnPropsType, AppStateType>(mapStateToProps,
-    { setCurrentPage, getUsers: getUsersThunkCreator, followingUser, unfollowingUser }))
+    {  getUsers: getUsersThunkCreator, followingUser, unfollowingUser }))
   (UsersContainer)
 

@@ -5,47 +5,32 @@ export enum ResultCodesEnum {
   Error = 0,
   CaptchaIsRequired = 10,
 }
-
-export type MeType = {
-  data: {
-    id: number;
-    email: string;
-    login: string;
-  };
-  resultCode: ResultCodesEnum;
+export type ResponseTypesDefault<D = {}, RC = ResultCodesEnum> = {
+  data: D;
   messages: Array<string>;
+  resultCode: RC;
 };
 
-export type LoginType = {
-  data: {
-    userId: number;
-  };
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
+export type MeDataType = {
+  id: number;
+  email: string;
+  login: string;
 };
-export type LogoutType = {
-  data: {};
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
+
+export type LoginDataType = {
+  userId: number;
 };
+
 export type GetCaptchaUrlType = {
   url: string;
 };
+
 export type GetUsersType = {
   items: Array<UsersType>;
   totalCount: number;
   error: string;
 };
-export type FollowType = {
-  data: {};
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-};
-export type UnfollowType = {
-  data: {};
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-};
+
 export type GetProfileType = {
   userId: number;
   lookingForAJob: boolean;
@@ -64,18 +49,6 @@ export type GetProfileType = {
   };
   photos: PhotosType;
 };
-export type UpdateStatusType = {
-  data: {};
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-}
-export type SavePhotoType = {
-  data: PhotosType;
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-}
-export type SaveProfileType = {
-  data: {};
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-}
+export type SavePhotoDataType = {
+  photos: PhotosType;
+};

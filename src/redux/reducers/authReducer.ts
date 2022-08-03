@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { authApi } from "../../api/api";
+import { authApi } from "../../api/authApi";
 import { AppStateType } from "../store";
 
 const SET_USER_DATA = "SET_USER_DATA";

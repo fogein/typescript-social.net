@@ -41,11 +41,11 @@ export type RouteComponentProps<P> = {
   location: H.Location;
   history: H.History;
   staticContext?: any;
-}
+};
 
 export type match<P> = {
   params: P;
   isExact: boolean;
   path: string;
   url: string;
-}
+};
