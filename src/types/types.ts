@@ -1,4 +1,4 @@
-
+import * as H from "history";
 
 export type PhotosType = {
   small: string | null;
@@ -14,6 +14,7 @@ export type ProfileType = {
   lookingForAJob: boolean;
   lookingForAJobDescription: string;
   fullName: string;
+  aboutMe: string;
   contacts: {
     github: string;
     vk: string;
@@ -35,3 +36,16 @@ export type UsersType = {
   followed: boolean;
 };
 
+export type RouteComponentProps<P> = {
+  match: match<P>;
+  location: H.Location;
+  history: H.History;
+  staticContext?: any;
+}
+
+export type match<P> = {
+  params: P;
+  isExact: boolean;
+  path: string;
+  url: string;
+}

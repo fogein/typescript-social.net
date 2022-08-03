@@ -1,4 +1,6 @@
+import { Dispatch } from "redux";
 import { authApi } from "../../api/api";
+import { AppStateType } from "../store";
 
 const SET_USER_DATA = "SET_USER_DATA";
 const setErrorText = "SET_ERROR";
@@ -9,7 +11,7 @@ type InitialStateType = {
   email: string | null;
   login: string | null;
   isFetching: boolean;
-  isAuth: boolean;
+  isAuth: boolean | null;
   errorText: string;
   captchaUrl: string;
 };
@@ -23,7 +25,7 @@ let initialState: InitialStateType = {
   errorText: "",
   captchaUrl: "",
 };
-export const authReducer = (state = initialState, action:any): InitialStateType => {
+export const authReducer = (state = initialState, action:ActionType): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
@@ -44,6 +46,10 @@ export const authReducer = (state = initialState, action:any): InitialStateType 
       return state;
   }
 };
+type ActionType =
+    SetErrorActionType
+  | GetCaptchaActionType
+  | SetAuthUserDataActionType
 
 type DataActionType = {
   email: string | null;
@@ -93,15 +99,17 @@ const getCaptchaAC = (captchaUrl: string): GetCaptchaActionType => {
   };
 };
 
+type GetStateType = () => AppStateType
+type DispatchType = Dispatch<ActionType>
+
 export const authMe = () => {
-  return (dispatch:any) => {
-    return authApi.me().then((data) => {
-      if (data.resultCode === 0) {
-        let { email, id, login } = data.data;
-        dispatch(setAuthUserData(email, id, login, true));
-        dispatch(setError(""));
-      }
-    });
+  return async (dispatch:DispatchType ,getState:GetStateType) => {
+    const data = await authApi.me();
+    if (data.resultCode === 0) {
+      let { email, id, login } = data.data;
+      dispatch(setAuthUserData(email, id, login, true));
+      dispatch(setError(""));
+    }
   };
 };
 
@@ -111,16 +119,16 @@ export const login = (email:string, password:string, rememberMe:boolean, captcha
       if (data.resultCode === 0) {
         dispatch(authMe());
       } else if (data.resultCode === 1) {
-        dispatch(setError(data.messages));
+        dispatch(setError(data.messages[0]));
       } else if (data.resultCode === 10) {
-        dispatch(setError(data.messages));
+        dispatch(setError(data.messages[0]));
         dispatch(getCaptcha());
       }
     });
   };
 };
 const getCaptcha = () => {
-  return (dispatch:any) => {
+  return (dispatch:DispatchType ,getState:GetStateType) => {
     authApi.getCaptchaUrl().then((data) => {
       dispatch(getCaptchaAC(data.url));
     });

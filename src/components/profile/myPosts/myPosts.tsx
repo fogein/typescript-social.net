@@ -1,15 +1,23 @@
 import React from "react";
+import { PostsType } from "../../../types/types";
 import { Post } from "../post/post";
 import cls from "./myPosts.module.css";
 
-export const MyPosts = (props) => {
+type PropsType = {
+  updateNewPostText: (newText:string) => void
+  addPost:() => void
+  newPostText:string
+  posts:Array<PostsType>
+}
 
-  const changeText = (e) => {
+export const MyPosts:React.FC<PropsType> = (props) => {
+
+  const changeText = (e:React.ChangeEvent<HTMLInputElement>) => {
     let newText = e.target.value;
     props.updateNewPostText(newText)
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e:React.MouseEvent) => {
     e.preventDefault();
     props.addPost()
   };

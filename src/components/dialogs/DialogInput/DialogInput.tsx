@@ -3,8 +3,7 @@ import cls from "../dialogs.module.css";
 
 type PropsType = {
   sendMessage: (message: string) => void
-  onSubmit?: (e: React.ChangeEvent<HTMLFormElement>) => void
-  onChangeHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void
+
 }
 
 export const DialogsInput: React.FC<PropsType> = (props) => {

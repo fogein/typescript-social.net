@@ -20,11 +20,11 @@ export const Login: React.FC = () => {
   const captcha = useSelector((state: AppStateType) => state.auth.captchaUrl)
 
 
-  const { register, setError, handleSubmit, formState: { errors } } = useForm();
+  const { register, setError, handleSubmit, formState: { errors } } = useForm<DataType>();
 
 
 
-  const onSubmit: SubmitHandler<DataType> = ({ email, password, rememberMe, captcha }) => {
+  const onSubmit:SubmitHandler<DataType> = ({ email, password, rememberMe, captcha }) => {
     dispatch(login(email, password, rememberMe, captcha))
   }
 
@@ -42,7 +42,7 @@ export const Login: React.FC = () => {
 
     <>
       <h1>Login</h1>
-      {/* @ts-ignore */}
+     
       <form onSubmit={handleSubmit(onSubmit)}>
 
         <div>
@@ -71,7 +71,7 @@ export const Login: React.FC = () => {
           <label htmlFor="rememberMe">rememberMe</label>
           <input
             type="checkbox"
-            {...register("remmemberMe")}
+            {...register("rememberMe")}
           />
         </div>
         <div>

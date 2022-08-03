@@ -1,5 +1,7 @@
+import { Dispatch } from "redux";
 import { profileApi } from "../../api/api";
 import { PhotosType, PostsType, ProfileType } from "../../types/types";
+import { AppStateType } from "../store";
 
 const ADDPOST = "ADD-POST";
 const UPDATENEWPOSTTEXT = "UPDATE-NEW-POST-TEXT";
@@ -7,8 +9,6 @@ const SETUSERPROFILE = "SET_USER_PROFILE";
 const SET_STATUS = "SET_STATUS";
 const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
 const SET_ERROR = "SET_ERROR";
-
-
 
 let initialState = {
   posts: [
@@ -26,7 +26,7 @@ type InitialStateType = typeof initialState;
 
 export const profileReducer = (
   state = initialState,
-  action:any
+  action: ActionType
 ): InitialStateType => {
   switch (action.type) {
     case ADDPOST:
@@ -74,6 +74,14 @@ export const profileReducer = (
   }
 };
 
+type ActionType =
+    AddPostActionCreatorAT
+  | UpdateNewPostTextActionCreatorAT
+  | SetUserProfileAT
+  | SetErrorAT
+  | SetStatusAT
+  | SavePhotoSuccessAT;
+
 type AddPostActionCreatorAT = {
   type: typeof ADDPOST;
 };
@@ -103,7 +111,7 @@ type SetUserProfileAT = {
   type: typeof SETUSERPROFILE;
 };
 
-export const setUserProfile = (profile:ProfileType):SetUserProfileAT => {
+export const setUserProfile = (profile: ProfileType): SetUserProfileAT => {
   return {
     type: SETUSERPROFILE,
     profile,
@@ -111,11 +119,11 @@ export const setUserProfile = (profile:ProfileType):SetUserProfileAT => {
 };
 
 type SetStatusAT = {
-  type : typeof SET_STATUS
-  status:string
-}
+  type: typeof SET_STATUS;
+  status: string;
+};
 
-export const setStatus = (status:string):SetStatusAT => {
+export const setStatus = (status: string): SetStatusAT => {
   return {
     type: SET_STATUS,
     status,
@@ -124,11 +132,10 @@ export const setStatus = (status:string):SetStatusAT => {
 
 type SavePhotoSuccessAT = {
   type: typeof SAVE_PHOTO_SUCCESS;
-  photos:PhotosType
+  photos: PhotosType;
 };
 
-
-export const savePhotoSuccess = (photos:PhotosType):SavePhotoSuccessAT => {
+export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessAT => {
   return {
     type: SAVE_PHOTO_SUCCESS,
     photos,
@@ -136,33 +143,37 @@ export const savePhotoSuccess = (photos:PhotosType):SavePhotoSuccessAT => {
 };
 
 type SetErrorAT = {
-  type : typeof SET_ERROR
-  error:string
-}
+  type: typeof SET_ERROR;
+  error: string;
+};
 
-export const setError = (error:string):SetErrorAT => {
+export const setError = (error: string): SetErrorAT => {
   return {
     type: SET_ERROR,
     error,
   };
 };
 
-export const getProfile = (userId:number) => {
-  return (dispatch:any) => {
+
+type GetStateType = () => AppStateType
+type DispatchType = Dispatch<ActionType>
+
+export const getProfile = (userId: number) => {
+  return (dispatch:DispatchType ,getState:GetStateType) => {
     profileApi.getProfile(userId).then((data) => {
       dispatch(setUserProfile(data));
     });
   };
 };
-export const getStatus = (userId:number) => {
-  return (dispatch:any) => {
+export const getStatus = (userId: number) => {
+  return (dispatch:DispatchType ,getState:GetStateType) => {
     profileApi.getStatus(userId).then((data) => {
       dispatch(setStatus(data));
     });
   };
 };
-export const updateStatus = (status:string) => {
-  return (dispatch:any) => {
+export const updateStatus = (status: string) => {
+  return (dispatch:DispatchType ,getState:GetStateType) => {
     profileApi.updateStatus(status).then((data) => {
       if (data.resultCode === 0) {
         dispatch(setStatus(status));
@@ -171,8 +182,8 @@ export const updateStatus = (status:string) => {
   };
 };
 
-export const savePhoto = (file:any) => {
-  return (dispatch:any) => {
+export const savePhoto = (file: any) => {
+  return (dispatch:DispatchType ,getState:GetStateType) => {
     profileApi.savePhoto(file).then((data) => {
       if (data.resultCode === 0) {
         dispatch(savePhotoSuccess(data.data.photos));
@@ -181,16 +192,13 @@ export const savePhoto = (file:any) => {
   };
 };
 
-export const updateProfile = (profile:ProfileType,userId:number) => {
-  return async (dispatch:any) => {
+export const updateProfile = (profile: ProfileType, userId: number) => {
+  return async (dispatch: any) => {
     await profileApi.saveProfile(profile).then((data) => {
-      
-      if(data.resultCode === 0) {
-        dispatch(getProfile(userId))
-        
-      }
-      else if (data.resultCode === 1) {
-        dispatch(setError(data.messages));
+      if (data.resultCode === 0) {
+        dispatch(getProfile(userId));
+      } else if (data.resultCode === 1) {
+        dispatch(setError(data.messages[0]));
         setTimeout(() => {
           dispatch(setError(""));
         }, 2000);

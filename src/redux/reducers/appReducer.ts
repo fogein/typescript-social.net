@@ -10,7 +10,7 @@ let initialState: InitialStateType = {
   initialized: false,
 };
 
-export const appReducer = (state = initialState, action:any): InitialStateType => {
+export const appReducer = (state = initialState, action:SetAuthUserDataActionType): InitialStateType => {
   switch (action.type) {
     case INITIALIZE_SUCCESS:
       return {
@@ -30,6 +30,9 @@ export const setAuthUserData = (): SetAuthUserDataActionType => {
     type: INITIALIZE_SUCCESS,
   };
 };
+
+// type GetStateType = () => AppStateType
+// type DispatchType = Dispatch<SetAuthUserDataActionType>
 
 export const initializeApp = () => {
   return (dispatch:any) => {

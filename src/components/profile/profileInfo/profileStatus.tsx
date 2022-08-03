@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import cls from './profileInfo.module.css'
 
-export const ProfileStatus = ({ status, updateStatus }) => {
+type PropsType = {
+  status: string
+  updateStatus: (status: string) => void
+}
+
+export const ProfileStatus: React.FC<PropsType> = ({ status, updateStatus }) => {
 
   const [editMode, setEditMode] = useState(false);
   const [statusText, setStatusText] = useState(status);
@@ -14,7 +19,7 @@ export const ProfileStatus = ({ status, updateStatus }) => {
     setEditMode(false)
     updateStatus(statusText)
   }
-  const onChangeHandler = (e) => {
+  const onChangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
     let text = e.target.value;
     setStatusText(text)
   }
