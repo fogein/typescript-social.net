@@ -1,4 +1,5 @@
-const sendMessage = "SEND_MESSAGE";
+import { ActionTypesFromStore } from "../store";
+
 
 export type DialogType = {
   id: number;
@@ -29,10 +30,10 @@ let initialState : InitialStateType = {
 };
 export const dialogsReducer = (
   state = initialState,
-  action:any
+  action:ActionType
 ): InitialStateType => {
   switch (action.type) {
-    case sendMessage:
+    case "SEND_MESSAGE":
       return {
         ...state,
         messages: [...state.messages, { id: 5, message: action.message }],
@@ -42,14 +43,13 @@ export const dialogsReducer = (
   }
 };
 
-type SendMessageCreatorActionType = {
-  type:typeof sendMessage
-  message : string
-}
+type ActionType = ActionTypesFromStore<typeof actions>;
 
-export const sendMessageCreator = (message:string):SendMessageCreatorActionType => {
-  return {
-    type: sendMessage,
-    message,
-  };
-};
+export const actions = {
+  sendMessageCreator : (message:string) => {
+    return {
+      type: "SEND_MESSAGE",
+      message,
+    }as const;
+  }
+}

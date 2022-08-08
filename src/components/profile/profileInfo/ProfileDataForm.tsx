@@ -1,15 +1,23 @@
+import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
-import { updateProfile } from '../../../redux/reducers/profileReducer.ts'
+import { updateProfile } from '../../../redux/reducers/profileReducer'
+import { ContactsType, ProfileType } from '../../../types/types';
 import cls from './profileInfo.module.css'
 
-export const ProfileDataForm = ({ setEditMode, profile }) => {
+type PropsType = {
+  setEditMode: Dispatch<SetStateAction<boolean>>
+  profile: ProfileType
+}
+
+
+export const ProfileDataForm: React.FC<PropsType> = ({ setEditMode, profile }) => {
 
   const dispatch = useDispatch()
 
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    dispatch(updateProfile(data,profile.userId))
+  const { register, handleSubmit } = useForm<ProfileType>();
+  const onSubmit = (data:ProfileType) => {
+    dispatch(updateProfile(data, profile.userId))
     setEditMode(false)
 
 
@@ -45,7 +53,7 @@ export const ProfileDataForm = ({ setEditMode, profile }) => {
       <div>{Object.keys(profile.contacts).map(key => {
         return <div key={key} className={cls.editInput}>
           <label htmlFor={key}>{key}</label>
-          <input defaultValue={profile.contacts[key]} placeholder={key} {...register(`contacts.${key}`)} />
+          <input defaultValue={profile.contacts[key as keyof ContactsType]} placeholder={key} {...register(`contacts.${key as keyof ContactsType}`)} />
         </div>
       })}
       </div>

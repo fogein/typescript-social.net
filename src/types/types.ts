@@ -9,22 +9,23 @@ export type PostsType = {
   message: string;
   likesCount: number;
 };
+export type ContactsType = {
+  github: string;
+  vk: string;
+  facebook: string;
+  instagram: string;
+  twitter: string;
+  website: string;
+  youtube: string;
+  mainLink: string;
+};
 export type ProfileType = {
   userId: number;
   lookingForAJob: boolean;
   lookingForAJobDescription: string;
   fullName: string;
   aboutMe: string;
-  contacts: {
-    github: string;
-    vk: string;
-    facebook: string;
-    instagram: string;
-    twitter: string;
-    website: string;
-    youtube: string;
-    mainLink: string;
-  };
+  contacts: ContactsType;
   photos: PhotosType;
 };
 

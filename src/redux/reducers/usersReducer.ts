@@ -1,7 +1,6 @@
-import { Dispatch } from "redux";
 import { usersApi } from "../../api/usersApi";
 import { UsersType } from "../../types/types";
-import { ActionTypesFromStore, AppStateType } from "../store";
+import { ActionTypesFromStore, BaseThunkType } from "../store";
 
 
 let initialState = {
@@ -101,11 +100,10 @@ export const actions = {
   },
 };
 
-type GetStateType = () => AppStateType;
-type DispatchType = Dispatch<ActionType>;
+type ThunkType = BaseThunkType<ActionType>
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-  return (dispatch: DispatchType, getState: GetStateType) => {
+export const getUsersThunkCreator = (currentPage: number, pageSize: number):ThunkType => {
+  return (dispatch) => {
     dispatch(actions.toggleIsFetching(true));
     usersApi.getUsers(currentPage, pageSize).then((data) => {
       setTimeout(() => {
@@ -117,8 +115,8 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
     });
   };
 };
-export const followingUser = (userId: number) => {
-  return (dispatch: DispatchType, getState: GetStateType) => {
+export const followingUser = (userId: number):ThunkType => {
+  return (dispatch) => {
     dispatch(actions.toggleIsFollowing(true, userId));
     usersApi.follow(userId).then((data) => {
       dispatch(actions.toggleIsFollowing(false, userId));
@@ -128,8 +126,8 @@ export const followingUser = (userId: number) => {
     });
   };
 };
-export const unfollowingUser = (userId: number) => {
-  return (dispatch: DispatchType, getState: GetStateType) => {
+export const unfollowingUser = (userId: number):ThunkType => {
+  return (dispatch) => {
     dispatch(actions.toggleIsFollowing(true, userId));
     usersApi.unfollow(userId).then((data) => {
       dispatch(actions.toggleIsFollowing(false, userId));

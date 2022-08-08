@@ -18,7 +18,7 @@ export const Dialogs: React.FC<PropsType> = (props) => {
     <div className={cls.dialogs}>
       <div className={cls.dialogsItem}>
         {props.dialogs.map(({ name, id }) => {
-          return <DialogItem key={id} id={id} name={name} />;
+          return <DialogItem key={id} id={id.toString()} name={name} />;
         })}
       </div>
       <div className={cls.messages}>

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { DialogType, MessageType, sendMessageCreator } from '../../redux/reducers/dialogsReducer';
+import { DialogType, MessageType, actions } from '../../redux/reducers/dialogsReducer';
 import { AppStateType } from "../../redux/store";
 import { Dialogs } from "./dialogs";
 
@@ -26,7 +26,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 let mapDispatchToProps = (dispatch: any): MapDispatchToPropsType => {
   return {
     sendMessage: (message: string) => {
-      dispatch(sendMessageCreator(message));
+      dispatch(actions.sendMessageCreator(message));
     }
   }
 }

@@ -1,18 +1,15 @@
+import { ActionTypesFromStore, BaseThunkType } from '../store';
 import { authMe } from './authReducer';
 
-const INITIALIZE_SUCCESS = "INITIALIZE_SUCCESS";
 
-type InitialStateType = {
-  initialized: boolean;
-};
-
-let initialState: InitialStateType = {
+let initialState = {
   initialized: false,
 };
+type InitialStateType = typeof initialState
 
-export const appReducer = (state = initialState, action:SetAuthUserDataActionType): InitialStateType => {
+export const appReducer = (state = initialState, action:ActionType): InitialStateType => {
   switch (action.type) {
-    case INITIALIZE_SUCCESS:
+    case "INITIALIZE_SUCCESS":
       return {
         ...state,
         initialized: true,
@@ -21,24 +18,24 @@ export const appReducer = (state = initialState, action:SetAuthUserDataActionTyp
       return state;
   }
 };
-type SetAuthUserDataActionType = {
-  type: typeof INITIALIZE_SUCCESS;
-};
 
-export const setAuthUserData = (): SetAuthUserDataActionType => {
-  return {
-    type: INITIALIZE_SUCCESS,
-  };
-};
+type ActionType = ActionTypesFromStore<typeof actions>;
 
-// type GetStateType = () => AppStateType
-// type DispatchType = Dispatch<SetAuthUserDataActionType>
+const actions = {
+  setAuthUserData : () => {
+    return {
+      type: "INITIALIZE_SUCCESS",
+    }as const;
+  },
+}
 
-export const initializeApp = () => {
+type ThunkType = BaseThunkType<ActionType>
+
+export const initializeApp = ():ThunkType => {
   return (dispatch:any) => {
     let promise = dispatch(authMe());
     promise.then(() => {
-      dispatch(setAuthUserData());
+      dispatch(actions.setAuthUserData());
     });
   };
 };

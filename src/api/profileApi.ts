@@ -1,6 +1,5 @@
 import { ProfileType } from "../types/types";
 import {
-  GetProfileType,
   ResponseTypesDefault,
   SavePhotoDataType
   
@@ -13,11 +12,11 @@ import { instance } from "./api";
 
 export const profileApi = {
   async getProfile(userId: number) {
-    const res = await instance.get<GetProfileType>(`profile/${userId}`);
+    const res = await instance.get<ProfileType>(`profile/${userId}`);
     return res.data;
   },
   async getStatus(userId: number) {
-    const res = await instance.get<any>(`profile/status/${userId}`);
+    const res = await instance.get<string>(`profile/status/${userId}`);
     return res.data;
   },
   async updateStatus(status: string) {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { Preloader } from '../../preloader/preloader'
 import cls from './profileInfo.module.css'
 import { ProfileStatus } from './profileStatus'
@@ -6,10 +6,19 @@ import userPhoto from '../../../assets/images/user.png'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { ProfileDataForm } from './ProfileDataForm';
+import { ContactsType, ProfileType } from '../../../types/types'
+import { AppStateType } from '../../../redux/store'
 
+type PropsType = {
+  savePhoto: (file: File) => void
+  updateStatus: (status: string) => void
+  profile: ProfileType | null
+  isOwner: boolean
+  status: string
 
+}
 
-export const ProfileInfo = (props) => {
+export const ProfileInfo: React.FC<PropsType> = (props) => {
 
   const [editMode, setEditMode] = useState(false)
 
@@ -17,8 +26,8 @@ export const ProfileInfo = (props) => {
     return <Preloader />
   }
 
-  const onSetPhoto = (e) => {
-    if (e.target.files.length) {
+  const onSetPhoto = (e:ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length) {
       props.savePhoto(e.target.files[0])
     }
   }
@@ -34,13 +43,10 @@ export const ProfileInfo = (props) => {
           ?
           <ProfileDataForm
             profile={props.profile}
-            updateStatus={props.updateStatus}
-            status={props.status}
             setEditMode={setEditMode}
           />
           :
           <ProfileData
-            setEditMode={setEditMode}
             profile={props.profile}
             updateStatus={props.updateStatus}
             status={props.status}
@@ -57,9 +63,16 @@ export const ProfileInfo = (props) => {
   )
 }
 
-const ProfileData = ({ profile, updateStatus, status }) => {
+type ProfileDataType = {
+  profile: ProfileType
+  status: string
+  updateStatus: (status: string) => void
 
-  const errorProfileData = useSelector(state => state.profilePage.error)
+}
+
+const ProfileData: React.FC<ProfileDataType> = ({ profile, updateStatus, status }) => {
+
+  const errorProfileData = useSelector((state: AppStateType) => state.profilePage.error)
 
   return <div className={cls.aboutProfile}>
     {errorProfileData !== ''
@@ -79,16 +92,22 @@ const ProfileData = ({ profile, updateStatus, status }) => {
     </div>
     <div className={cls.contacts}>Contacts</div>
     <div>{Object.keys(profile.contacts).map(key => {
-      return profile.contacts[key] !== ''
+      return profile.contacts[key as keyof ContactsType] !== ''
         ?
-        <Contacts key={key} contactName={key} contactValue={profile.contacts[key]} />
+        <Contacts key={key} contactName={key} contactValue={profile.contacts[key as keyof ContactsType]} />
         : ''
     })}</div>
   </div>
 
 }
 
-const Contacts = ({ contactName, contactValue }) => {
+type ContactsProps = {
+
+  contactName: string
+  contactValue: string
+}
+
+const Contacts: React.FC<ContactsProps> = ({ contactName, contactValue }) => {
   return (
     <div className={cls.contactsValue} ><b>{contactName}</b>:{contactValue}</div>
   )

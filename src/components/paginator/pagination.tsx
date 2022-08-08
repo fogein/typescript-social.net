@@ -35,7 +35,7 @@ export const Pagination:React.FC<Props> = ({ totalUsersCount, pageSize, onPageCh
       {pages
         .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
         .map(p => {
-          return <span onClick={() => onPageChanged(p)}
+          return <span key={p} onClick={() => onPageChanged(p)}
             className={cn({ [cls.selected]: currentPage === p }, cls.pages)}>{p}</span>
         })}
 

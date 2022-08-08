@@ -3,7 +3,7 @@ import cls from "./dialogItem.module.css";
 import { Link } from "react-router-dom";
 
 type PropsType = {
-  id: any
+  id: string
   name: string
 }
 

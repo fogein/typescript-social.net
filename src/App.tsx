@@ -6,8 +6,9 @@ import { Login } from './components/login/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { Header } from './components/header/header';
 import { useEffect } from 'react';
-import { initializeApp } from './redux/reducers/appReducer.ts';
+import { initializeApp } from './redux/reducers/appReducer';
 import { Preloader } from './components/preloader/preloader';
+import { AppStateType } from './redux/store';
 
 
 const DialogsContainer = lazy(() => import('./components/dialogs/dialogsContainer').then(module => ({ default: module.DialogsContainer }))
@@ -17,16 +18,20 @@ const ProfileContainerComponent = lazy(() => import('./components/profile/profil
 const UsersContainerComponent = lazy(() => import('./components/users/usersContainer').then(module => ({ default: module.UsersContainerComponent }))
 );
 
-export const App = (props) => {
+type PropsType = {
+   
+}
+
+export const App: React.FC<PropsType> = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(initializeApp())
     }, [dispatch])
 
-    const authId = useSelector((state) => state.auth.id)
-    const auth = useSelector((state) => state.auth.isAuth)
-    const initialized = useSelector((state) => state.app.initialized)
+    
+    const auth = useSelector((state: AppStateType) => state.auth.isAuth)
+    const initialized = useSelector((state: AppStateType) => state.app.initialized)
 
 
     if (!initialized) {
@@ -44,25 +49,25 @@ export const App = (props) => {
                         />} />
                         <Route path='/users' render={() => <UsersContainerComponent />
                         } />
-                        <Route path='/profile/:userId?' render={() => <ProfileContainerComponent authId={authId}
+                        <Route path='/profile/:userId?' render={() => <ProfileContainerComponent
                         />
                         } />
-                    {
-                        auth ?
-                            (
-                                <>
+                        {
+                            auth ?
+                                (
+                                    <>
 
-                                    <Route path='/dialogs/' render={() => <DialogsContainer
-                                    />} />
+                                        <Route path='/dialogs/' render={() => <DialogsContainer
+                                        />} />
 
-                                </>)
-                            :
-                            <Redirect to='/login' />
+                                    </>)
+                                :
+                                <Redirect to='/login' />
 
-                    }
-                </React.Suspense>
+                        }
+                    </React.Suspense>
+                </div>
             </div>
-        </div>
         </BrowserRouter >
     );
 }

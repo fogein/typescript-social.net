@@ -22,7 +22,7 @@ type MapDispatchToPropsType = {
   followingUser: (userId: number) => void
 }
 type OwnPropsType = {
-  onPageChanged: (pageNumber: number) => void
+  onPageChanged?: (pageNumber: number) => void
 
 }
 

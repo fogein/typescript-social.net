@@ -1,14 +1,6 @@
-import { Dispatch } from "redux";
 import { profileApi } from "../../api/profileApi";
 import { PhotosType, PostsType, ProfileType } from "../../types/types";
-import { AppStateType } from "../store";
-
-const ADDPOST = "ADD-POST";
-const UPDATENEWPOSTTEXT = "UPDATE-NEW-POST-TEXT";
-const SETUSERPROFILE = "SET_USER_PROFILE";
-const SET_STATUS = "SET_STATUS";
-const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
-const SET_ERROR = "SET_ERROR";
+import { ActionTypesFromStore, BaseThunkType } from "../store";
 
 let initialState = {
   posts: [
@@ -29,7 +21,7 @@ export const profileReducer = (
   action: ActionType
 ): InitialStateType => {
   switch (action.type) {
-    case ADDPOST:
+    case "ADD_POST":
       let newPost = {
         id: 4,
         message: state.newPostText,
@@ -40,30 +32,30 @@ export const profileReducer = (
         newPostText: "",
         posts: [...state.posts, newPost],
       };
-    case UPDATENEWPOSTTEXT:
+    case "UPDATE_NEW_POST_TEXT":
       return {
         ...state,
         newPostText: action.newText,
       };
-    case SETUSERPROFILE: {
+    case "SET_USER_PROFILE": {
       return {
         ...state,
         profile: action.profile,
       };
     }
-    case SET_STATUS: {
+    case "SET_STATUS": {
       return {
         ...state,
         status: action.status,
       };
     }
-    case SET_ERROR: {
+    case "SET_ERROR": {
       return {
         ...state,
         error: action.error,
       };
     }
-    case SAVE_PHOTO_SUCCESS: {
+    case "SAVE_PHOTO_SUCCESS": {
       return {
         ...state,
         profile: { ...state.profile, photos: action.photos } as ProfileType,
@@ -74,133 +66,91 @@ export const profileReducer = (
   }
 };
 
-type ActionType =
-    AddPostActionCreatorAT
-  | UpdateNewPostTextActionCreatorAT
-  | SetUserProfileAT
-  | SetErrorAT
-  | SetStatusAT
-  | SavePhotoSuccessAT;
+type ActionType = ActionTypesFromStore<typeof actions>;
 
-type AddPostActionCreatorAT = {
-  type: typeof ADDPOST;
+export const actions = {
+  addPostActionCreator: () => {
+    return {
+      type: "ADD_POST",
+    } as const;
+  },
+  updateNewPostTextActionCreator: (newText: string) => {
+    return {
+      type: "UPDATE_NEW_POST_TEXT",
+      newText,
+    } as const;
+  },
+  setUserProfile: (profile: ProfileType) => {
+    return {
+      type: "SET_USER_PROFILE",
+      profile,
+    } as const;
+  },
+  setStatus: (status: string) => {
+    return {
+      type: "SET_STATUS",
+      status,
+    } as const;
+  },
+  savePhotoSuccess: (photos: PhotosType) => {
+    return {
+      type: "SAVE_PHOTO_SUCCESS",
+      photos,
+    } as const;
+  },
+  setError: (error: string) => {
+    return {
+      type: "SET_ERROR",
+      error,
+    } as const;
+  },
 };
 
-export const addPostActionCreator = (): AddPostActionCreatorAT => {
-  return {
-    type: ADDPOST,
-  };
-};
+type ThunkType = BaseThunkType<ActionType>
 
-type UpdateNewPostTextActionCreatorAT = {
-  newText: string;
-  type: typeof UPDATENEWPOSTTEXT;
-};
-
-export const updateNewPostTextActionCreator = (
-  newText: string
-): UpdateNewPostTextActionCreatorAT => {
-  return {
-    type: UPDATENEWPOSTTEXT,
-    newText,
-  };
-};
-
-type SetUserProfileAT = {
-  profile: ProfileType;
-  type: typeof SETUSERPROFILE;
-};
-
-export const setUserProfile = (profile: ProfileType): SetUserProfileAT => {
-  return {
-    type: SETUSERPROFILE,
-    profile,
-  };
-};
-
-type SetStatusAT = {
-  type: typeof SET_STATUS;
-  status: string;
-};
-
-export const setStatus = (status: string): SetStatusAT => {
-  return {
-    type: SET_STATUS,
-    status,
-  };
-};
-
-type SavePhotoSuccessAT = {
-  type: typeof SAVE_PHOTO_SUCCESS;
-  photos: PhotosType;
-};
-
-export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessAT => {
-  return {
-    type: SAVE_PHOTO_SUCCESS,
-    photos,
-  };
-};
-
-type SetErrorAT = {
-  type: typeof SET_ERROR;
-  error: string;
-};
-
-export const setError = (error: string): SetErrorAT => {
-  return {
-    type: SET_ERROR,
-    error,
-  };
-};
-
-
-type GetStateType = () => AppStateType
-type DispatchType = Dispatch<ActionType>
-
-export const getProfile = (userId: number) => {
-  return (dispatch:DispatchType ,getState:GetStateType) => {
+export const getProfile = (userId: number):ThunkType => {
+  return (dispatch) => {
     profileApi.getProfile(userId).then((data) => {
-      dispatch(setUserProfile(data));
+      dispatch(actions.setUserProfile(data));
     });
   };
 };
-export const getStatus = (userId: number) => {
-  return (dispatch:DispatchType ,getState:GetStateType) => {
+export const getStatus = (userId: number):ThunkType => {
+  return (dispatch) => {
     profileApi.getStatus(userId).then((data) => {
-      dispatch(setStatus(data));
+      dispatch(actions.setStatus(data));
     });
   };
 };
-export const updateStatus = (status: string) => {
-  return (dispatch:DispatchType ,getState:GetStateType) => {
+export const updateStatus = (status: string):ThunkType => {
+  return (dispatch) => {
     profileApi.updateStatus(status).then((data) => {
       if (data.resultCode === 0) {
-        dispatch(setStatus(status));
+        dispatch(actions.setStatus(status));
       }
     });
   };
 };
 
-export const savePhoto = (file: any) => {
-  return (dispatch:DispatchType ,getState:GetStateType) => {
+export const savePhoto = (file: any):ThunkType => {
+  return (dispatch) => {
     profileApi.savePhoto(file).then((data) => {
       if (data.resultCode === 0) {
-        dispatch(savePhotoSuccess(data.data.photos));
+        dispatch(actions.savePhotoSuccess(data.data.photos));
       }
     });
   };
 };
 
-export const updateProfile = (profile: ProfileType, userId: number) => {
-  return async (dispatch: any) => {
+export const updateProfile = (profile: ProfileType, userId: number):ThunkType => {
+  return async (dispatch) => {
     await profileApi.saveProfile(profile).then((data) => {
       if (data.resultCode === 0) {
         dispatch(getProfile(userId));
       } else if (data.resultCode === 1) {
-        dispatch(setError(data.messages[0]));
+        dispatch(actions.setError(data.messages[0]));
         setTimeout(() => {
-          dispatch(setError(""));
+          dispatch(actions.setError(""));
         }, 2000);
       }
     });
