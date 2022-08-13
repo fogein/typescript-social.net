@@ -6,7 +6,7 @@ type InitialStateType = {
   email: string | null;
   login: string | null;
   isFetching: boolean;
-  isAuth: boolean | null;
+  isAuth: boolean;
   errorText: string;
   captchaUrl: string;
   id:number | null
@@ -53,7 +53,7 @@ export const actions ={
     email: string | null,
     id: number | null,
     login: string | null,
-    isAuth: boolean | null
+    isAuth: boolean 
   ) => {
     return {
       type: "SET_USER_DATA",

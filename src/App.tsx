@@ -11,11 +11,11 @@ import { Preloader } from './components/preloader/preloader';
 import { AppStateType } from './redux/store';
 
 
-const DialogsContainer = lazy(() => import('./components/dialogs/dialogsContainer').then(module => ({ default: module.DialogsContainer }))
+const Dialogs = lazy(() => import('./components/dialogs/dialogs').then(module => ({ default: module.Dialogs }))
 );
-const ProfileContainerComponent = lazy(() => import('./components/profile/profileContainer').then(module => ({ default: module.ProfileContainerComponent }))
+const ProfilePage = lazy(() => import('./components/profile/profileContainer').then(module => ({ default: module.ProfilePage }))
 );
-const UsersContainerComponent = lazy(() => import('./components/users/usersContainer').then(module => ({ default: module.UsersContainerComponent }))
+const UsersPage = lazy(() => import('./components/users/usersContainer').then(module => ({ default: module.UsersPage }))
 );
 
 type PropsType = {
@@ -33,7 +33,7 @@ export const App: React.FC<PropsType> = () => {
     const auth = useSelector((state: AppStateType) => state.auth.isAuth)
     const initialized = useSelector((state: AppStateType) => state.app.initialized)
 
-
+    
     if (!initialized) {
         return <Preloader />
 
@@ -47,9 +47,9 @@ export const App: React.FC<PropsType> = () => {
                     <React.Suspense fallback={<Preloader />}>
                         <Route path='/login' render={() => <Login
                         />} />
-                        <Route path='/users' render={() => <UsersContainerComponent />
+                        <Route path='/users' render={() => <UsersPage/>
                         } />
-                        <Route path='/profile/:userId?' render={() => <ProfileContainerComponent
+                        <Route path='/profile/:userId?' render={() => <ProfilePage
                         />
                         } />
                         {
@@ -57,7 +57,7 @@ export const App: React.FC<PropsType> = () => {
                                 (
                                     <>
 
-                                        <Route path='/dialogs/' render={() => <DialogsContainer
+                                        <Route path='/dialogs/' render={() => <Dialogs
                                         />} />
 
                                     </>)

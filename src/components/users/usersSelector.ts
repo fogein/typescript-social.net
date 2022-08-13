@@ -4,6 +4,9 @@ import { AppStateType } from "../../redux/store"
     export const getUsers = (state:AppStateType) => {
       return state.usersPage.users
     }
+    export const getFilter = (state:AppStateType) => {
+      return state.usersPage.filter
+    }
     export const getPageSize = (state:AppStateType) => {
       return state.usersPage.pageSize
     }

@@ -1,8 +1,25 @@
-import { render, screen } from '@testing-library/react';
-import {App} from './App';
+ import React from 'react';
+// import { render } from '@testing-library/react';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+// import {App} from './App';
+
+// import { Provider } from 'react-redux';
+// import configureStore from 'redux-mock-store';
+
+// describe('With React Testing Library', () => {
+//     const initialState = { output: 10 };
+//     const mockStore = configureStore();
+//     let store;
+
+//     it('Shows "Hello world!"', () => {
+//         store = mockStore(initialState);
+//         const { getByText } = render(
+//             <Provider store={store}>
+//                 <App />
+//             </Provider>
+//         );
+
+//         // eslint-disable-next-line testing-library/prefer-screen-queries
+//         expect(getByText('Hello World!')).not.toBeNull();
+//     });
+// });

@@ -2,7 +2,6 @@ import { usersApi } from "../../api/usersApi";
 import { UsersType } from "../../types/types";
 import { ActionTypesFromStore, BaseThunkType } from "../store";
 
-
 let initialState = {
   users: [] as Array<UsersType>,
   totalUsersCount: 21,
@@ -10,9 +9,14 @@ let initialState = {
   currentPage: 1,
   isFetching: false,
   followingProgress: [] as Array<number>,
+  filter: {
+    term: "",
+    friend: null as null | boolean,
+  },
 };
 
-type InitialStateType = typeof initialState;
+export type InitialStateType = typeof initialState;
+export type FilterType = typeof initialState.filter;
 
 export const usersReducer = (
   state = initialState,
@@ -41,27 +45,32 @@ export const usersReducer = (
         }),
       };
 
-    case 'SET_USERS':
+    case "SET_USERS":
       return {
         ...state,
         users: [...action.users],
       };
-    case 'SET_CURRENT_PAGE':
+    case "SET_CURRENT_PAGE":
       return {
         ...state,
         currentPage: action.currentPage,
       };
-    case 'SET_TOTAL_USERS_COUNT':
+    case "SET_TOTAL_USERS_COUNT":
       return {
         ...state,
         totalUsersCount: action.count,
       };
-    case 'TOGGLE_IS_FETCHING':
+    case "TOGGLE_IS_FETCHING":
       return {
         ...state,
         isFetching: action.isFetching,
       };
-    case 'TOGGLE_IS_FOLLOWING':
+    case "SET_TERM":
+      return {
+        ...state,
+        filter: action.payload,
+      };
+    case "TOGGLE_IS_FOLLOWING":
       return {
         ...state,
         followingProgress: action.isFetching
@@ -78,44 +87,52 @@ type ActionType = ActionTypesFromStore<typeof actions>;
 
 export const actions = {
   follow: (userId: number) => {
-    return { type: 'FOLLOW', userId }as const;
+    return { type: "FOLLOW", userId } as const;
   },
   unfollow: (userId: number) => {
-    return { type: 'UNFOLLOW', userId }as const;
+    return { type: "UNFOLLOW", userId } as const;
   },
   setUsers: (users: Array<UsersType>) => {
-    return { type: 'SET_USERS', users }as const;
+    return { type: "SET_USERS", users } as const;
   },
   setCurrentPage: (currentPage: number) => {
-    return { type: 'SET_CURRENT_PAGE', currentPage }as const;
+    return { type: "SET_CURRENT_PAGE", currentPage } as const;
   },
   setTotalUsersCount: (count: number) => {
-    return { type: 'SET_TOTAL_USERS_COUNT', count }as const;
+    return { type: "SET_TOTAL_USERS_COUNT", count } as const;
   },
   toggleIsFetching: (isFetching: boolean) => {
-    return { type: 'TOGGLE_IS_FETCHING', isFetching }as const;
+    return { type: "TOGGLE_IS_FETCHING", isFetching } as const;
   },
   toggleIsFollowing: (isFetching: boolean, userId: number) => {
-    return { type: 'TOGGLE_IS_FOLLOWING', isFetching, userId }as const;
+    return { type: "TOGGLE_IS_FOLLOWING", isFetching, userId } as const;
+  },
+  setTermAC: (filter:FilterType) => {
+    return { type: "SET_TERM", payload: filter } as const;
   },
 };
 
-type ThunkType = BaseThunkType<ActionType>
+type ThunkType = BaseThunkType<ActionType>;
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number):ThunkType => {
+export const getUsersThunkCreator = (
+  currentPage: number,
+  pageSize: number,
+  filter:FilterType
+): ThunkType => {
   return (dispatch) => {
     dispatch(actions.toggleIsFetching(true));
-    usersApi.getUsers(currentPage, pageSize).then((data) => {
+    dispatch(actions.setTermAC(filter));
+    usersApi.getUsers(currentPage, pageSize, filter.term,filter.friend).then((data) => {
       setTimeout(() => {
         dispatch(actions.toggleIsFetching(false));
       }, 500);
-      dispatch(actions.setCurrentPage(currentPage))
+      dispatch(actions.setCurrentPage(currentPage));
       dispatch(actions.setUsers(data.items));
       dispatch(actions.setTotalUsersCount(data.totalCount));
     });
   };
 };
-export const followingUser = (userId: number):ThunkType => {
+export const followingUser = (userId: number): ThunkType => {
   return (dispatch) => {
     dispatch(actions.toggleIsFollowing(true, userId));
     usersApi.follow(userId).then((data) => {
@@ -126,7 +143,7 @@ export const followingUser = (userId: number):ThunkType => {
     });
   };
 };
-export const unfollowingUser = (userId: number):ThunkType => {
+export const unfollowingUser = (userId: number): ThunkType => {
   return (dispatch) => {
     dispatch(actions.toggleIsFollowing(true, userId));
     usersApi.unfollow(userId).then((data) => {

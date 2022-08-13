@@ -1,15 +1,16 @@
-import {  GetUsersType, ResponseTypesDefault } from "./ApiTypes";
+import { GetUsersType, ResponseTypesDefault } from "./ApiTypes";
 import { instance } from "./api";
 import { profileApi } from "./profileApi";
 
-
-
-
-
 export const usersApi = {
-  async getUsers(currentPage: number, pageSize: number) {
+  async getUsers(
+    currentPage: number,
+    pageSize: number,
+    term: string = "",
+    friend: null | boolean = null
+  ) {
     const res = await instance.get<GetUsersType>(
-      `users?page=${currentPage}&count=${pageSize}`
+      `users?page=${currentPage}&count=${pageSize}&term=${term}`+(friend===null?'':`&friend=${friend}`)
     );
     return res.data;
   },
