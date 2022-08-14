@@ -1,8 +1,5 @@
 .form{
  display: flex;
  flex-direction: column;
- width: 200px;
-}
-.input{
-  height: 40px;
+ width: 300px;
 }

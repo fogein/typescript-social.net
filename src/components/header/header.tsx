@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import cls from './header.module.css'
 import { logout } from '../../redux/reducers/authReducer';
 import { AppStateType } from '../../redux/store';
+import { Button } from 'antd';
 
 type PropsType = {
 
 }
 
-export const Header:React.FC<PropsType> = (props) => {
+export const HeaderContent:React.FC<PropsType> = (props) => {
   const dispatch = useDispatch()
   const login = useSelector((state:AppStateType) => state.auth.login)
   const isAuth = useSelector((state:AppStateType) => state.auth.isAuth)
@@ -20,17 +21,16 @@ export const Header:React.FC<PropsType> = (props) => {
   } 
 
   return ( 
-    <header className={cls.header}>
-      <span>LOGO</span>
-      <div>
+    <div className={cls.header}>
+      
       {
-        isAuth ? login : <Link to={'/login'}> Login </Link>
+        isAuth ? <span>{login}</span> : <Link to={'/login'}> Login </Link>
       }
       {
-        isAuth ? <button type='button' onClick={logoutBut}>logout</button> : null
+        isAuth ? <Button type='link' onClick={logoutBut}>logout</Button> : null
       }
-      </div>
-    </header>
+      
+    </div>
   );
 }
 

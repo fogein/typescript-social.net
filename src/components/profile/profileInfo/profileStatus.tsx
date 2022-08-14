@@ -1,3 +1,4 @@
+import { Input } from 'antd'
 import React, { useEffect, useState } from 'react'
 import cls from './profileInfo.module.css'
 
@@ -30,9 +31,10 @@ export const ProfileStatus: React.FC<PropsType> = ({ status, updateStatus }) => 
       {!editMode ?
         <span onDoubleClick={() => setEditMode(true)} className={cls.status}>Status: {status ? status : '_____'}</span>
         :
-        <input onChange={onChangeHandler}
-          autoFocus={true}
-          onBlur={deactivateInput} type="text" value={statusText} />
+        <Input
+        onChange={onChangeHandler}
+        autoFocus={true}
+        onBlur={deactivateInput} type="text" value={statusText}  />
       }
     </>
   )

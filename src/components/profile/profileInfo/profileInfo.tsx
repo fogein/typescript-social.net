@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { ProfileDataForm } from './ProfileDataForm';
 import { ContactsType, ProfileType } from '../../../types/types'
 import { AppStateType } from '../../../redux/store'
+import { Button } from 'antd';
 
 type PropsType = {
   savePhoto: (file: File) => void
@@ -56,7 +57,7 @@ export const ProfileInfo: React.FC<PropsType> = (props) => {
           &&
           !editMode
           &&
-          <button type={'submit'} className={cls.editButton} onClick={() => setEditMode(true)} >Edit</button>
+          <Button type={'primary'} className={cls.editButton} onClick={() => setEditMode(true)} >Edit</Button>
         }
       </div>
     </div>

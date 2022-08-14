@@ -7,6 +7,7 @@ import { UsersSearchForm } from './users-search-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotalUsersCount, getUsers, getFollowingProgress } from './usersSelector';
 import { FilterType, followingUser, getUsersThunkCreator, unfollowingUser } from './../../redux/reducers/usersReducer';
+import { Button } from 'antd';
 
 
 type UserType = {
@@ -36,7 +37,7 @@ export const Users: React.FC<UserType> = ({currentPage,pageSize,filter}) => {
   }
 
   return (
-    <>
+    <div className={cls.mainCont}>
       <UsersSearchForm
         pageSize={pageSize}
         totalUsersCount={totalUsersCount}
@@ -60,11 +61,11 @@ export const Users: React.FC<UserType> = ({currentPage,pageSize,filter}) => {
 
                 ?
 
-                <button disabled={followingProgress.some(n => n === id)} onClick={() => unfollow(id)}>unfollow</button>
+                <Button type='primary' disabled={followingProgress.some(n => n === id)} onClick={() => unfollow(id)}>unfollow</Button>
 
                 :
 
-                <button disabled={followingProgress.some(n => n === id)} onClick={() => follow(id)}>follow</button>}
+                <Button type='primary' disabled={followingProgress.some(n => n === id)} onClick={() => follow(id)}>follow</Button>}
 
 
             </div>
@@ -82,6 +83,6 @@ export const Users: React.FC<UserType> = ({currentPage,pageSize,filter}) => {
           </div>
         })
       }
-    </>
+    </div>
   )
 }

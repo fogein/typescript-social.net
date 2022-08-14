@@ -1,6 +1,7 @@
 {
   "name": "social-network-type-script",
   "version": "0.1.0",
+  "homepage": "/profile",
   "private": true,
   "dependencies": {
     "@hookform/error-message": "^2.0.0",
@@ -8,11 +9,14 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/react-router-dom": "^5.3.3",
+    "antd": "^4.22.4",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
+    "query-string": "^7.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.31.1",
+    "react-hook-form-with-antd": "1.7.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.0",

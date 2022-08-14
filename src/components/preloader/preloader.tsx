@@ -1,8 +1,10 @@
 import React from 'react'
-import preloader from '../../assets/images/loader.svg'
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 
 export const Preloader:React.FC = () => {
+  const antIcon = <LoadingOutlined style={{ fontSize: 150 }} spin />
   return (
-    <img src={preloader} style={{width :'100px'}} alt="" />
+    <Spin style={{display:'flex',alignItems:'center',justifyContent:'center'}} indicator={antIcon} />
   )
 }

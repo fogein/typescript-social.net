@@ -1,7 +1,11 @@
+import { Button } from "antd";
 import React from "react";
 import { PostsType } from "../../../types/types";
 import { Post } from "../post/post";
 import cls from "./myPosts.module.css";
+import { Input } from 'antd';
+
+const { TextArea } = Input;
 
 type PropsType = {
   updateNewPostText: (newText:string) => void
@@ -12,7 +16,7 @@ type PropsType = {
 
 export const MyPosts:React.FC<PropsType> = (props) => {
 
-  const changeText = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const changeText = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
     let newText = e.target.value;
     props.updateNewPostText(newText)
   };
@@ -24,13 +28,8 @@ export const MyPosts:React.FC<PropsType> = (props) => {
   return (
     <>
       <form className={cls.form}>
-        <input
-          onChange={changeText}
-          className={cls.input}
-          value={props.newPostText}
-          type="text"
-        />
-        <button onClick={handleChange}>addPost</button>
+      <TextArea value={props.newPostText} showCount maxLength={100} style={{ height: 100 ,marginBottom:20}} onChange={changeText} />
+        <Button type='primary' onClick={handleChange}>addPost</Button>
       </form>
       {props.posts.map(({ message,id }) => {
         return <Post key={id} postText={message} />;
