@@ -9,14 +9,10 @@ import { useEffect } from 'react';
 import { initializeApp } from './redux/reducers/appReducer';
 import { Preloader } from './components/preloader/preloader';
 import { AppStateType } from './redux/store';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
+import { LaptopOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-
-const { Header, Content, Footer, Sider } = Layout;
-
-
+const { Header, Content, Sider } = Layout;
 
 const Dialogs = lazy(() => import('./components/dialogs/dialogs').then(module => ({ default: module.Dialogs }))
 );
@@ -24,6 +20,9 @@ const ProfilePage = lazy(() => import('./components/profile/profileContainer').t
 );
 const UsersPage = lazy(() => import('./components/users/usersContainer').then(module => ({ default: module.UsersPage }))
 );
+const ChatPage = lazy(() => import('./pages/chat-page/chat-page').then(module => ({ default: module.ChatPage }))
+);
+
 
 type PropsType = {
 
@@ -66,6 +65,7 @@ export const App: React.FC<PropsType> = () => {
                                 <SubMenu key={'sub1'} icon={<UserOutlined />} title='MyProfile'>
                                     <Menu.Item key={'1'}><Link to='/profile'> Profile </Link></Menu.Item>
                                     <Menu.Item key={'2'}><Link to='/dialogs'> Dialogs </Link></Menu.Item>
+                                    <Menu.Item key={'4'}><Link to='/chat'> Chat </Link></Menu.Item>
                                 </SubMenu>
                                 <SubMenu key={'sub2'} icon={<LaptopOutlined />} title='Developers'>
                                     <Menu.Item key={'3'}><Link to='/users'> Users </Link></Menu.Item>
@@ -73,30 +73,32 @@ export const App: React.FC<PropsType> = () => {
                             </Menu>
                         </Sider>
                         <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                          
-                                <React.Suspense fallback={<Preloader />}>
-                                    <Route path='/login' render={() => <Login
-                                    />} />
-                                    <Route path='/users' render={() => <UsersPage />
-                                    } />
-                                    <Route path='/profile/:userId?' render={() => <ProfilePage
-                                    />
-                                    } />
-                                    {
-                                        auth ?
-                                            (
-                                                <>
 
-                                                    <Route path='/dialogs/' render={() => <Dialogs
-                                                    />} />
+                            <React.Suspense fallback={<Preloader />}>
+                                <Route path='/login' render={() => <Login
+                                />} />
+                                <Route path='/users' render={() => <UsersPage />
+                                } />
+                                <Route path='/profile/:userId?' render={() => <ProfilePage
+                                />
+                                } />
+                                {
+                                    auth ?
+                                        (
+                                            <>
 
-                                                </>)
-                                            :
-                                            <Redirect to='/login' />
+                                                <Route path='/dialogs/' render={() => <Dialogs
+                                                />} />
+                                                <Route path='/chat' render={() => <ChatPage
+                                                />} />
 
-                                    }
-                                </React.Suspense>
-                         
+                                            </>)
+                                        :
+                                        <Redirect to='/login' />
+
+                                }
+                            </React.Suspense>
+
                         </Content>
                     </Layout>
                 </Content>

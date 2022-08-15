@@ -5,6 +5,7 @@ import { usersReducer } from "./reducers/usersReducer";
 import { appReducer } from "./reducers/appReducer";
 import { authReducer } from "./reducers/authReducer";
 import thunkMiddleware, { ThunkAction } from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 const reducers = combineReducers({
   profilePage: profileReducer,
@@ -29,6 +30,9 @@ export type BaseThunkType<A extends Action, R = void> = ThunkAction<
   A
 >;
 
-export const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+export const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunkMiddleware))
+);
 // @ts-ignore
 window.store = store;

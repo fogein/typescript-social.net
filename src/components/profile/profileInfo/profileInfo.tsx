@@ -9,6 +9,7 @@ import { ProfileDataForm } from './ProfileDataForm';
 import { ContactsType, ProfileType } from '../../../types/types'
 import { AppStateType } from '../../../redux/store'
 import { Button } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 type PropsType = {
   savePhoto: (file: File) => void
@@ -40,6 +41,12 @@ export const ProfileInfo: React.FC<PropsType> = (props) => {
         {props.isOwner && <input type="file" onChange={onSetPhoto} />}
       </div>
       <div className={cls.profileDataContainer}>
+      {props.isOwner
+          &&
+          !editMode
+          &&
+          <EditOutlined style={{fontSize:'20px'}} onClick={() => setEditMode(true)} />
+        }
         {editMode
           ?
           <ProfileDataForm
@@ -53,12 +60,7 @@ export const ProfileInfo: React.FC<PropsType> = (props) => {
             status={props.status}
           />
         }
-        {props.isOwner
-          &&
-          !editMode
-          &&
-          <Button type={'primary'} className={cls.editButton} onClick={() => setEditMode(true)} >Edit</Button>
-        }
+        
       </div>
     </div>
   )

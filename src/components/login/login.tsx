@@ -1,9 +1,11 @@
+import { Button } from 'antd';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { login } from '../../redux/reducers/authReducer';
 import { AppStateType } from '../../redux/store';
+import cls from './login.module.css'
 
 type DataType = {
   email: string
@@ -24,7 +26,7 @@ export const Login: React.FC = () => {
 
 
 
-  const onSubmit:SubmitHandler<DataType> = ({ email, password, rememberMe, captcha }) => {
+  const onSubmit: SubmitHandler<DataType> = ({ email, password, rememberMe, captcha }) => {
     dispatch(login(email, password, rememberMe, captcha))
   }
 
@@ -42,14 +44,15 @@ export const Login: React.FC = () => {
 
     <>
       <h1>Login</h1>
-     
-      <form onSubmit={handleSubmit(onSubmit)}>
+
+      <form >
 
         <div>
-          <input type="email" placeholder='login'{...register("email", { required: true })} />
+          <input className={cls.loginInput} type="email" placeholder='login'{...register("email", { required: true })} />
           {errors.email && <span> This field is required</span>}
         </div>
-        <div> <input type="password" placeholder='password'{...register("password", { required: true })} />
+        <div>
+          <input className={cls.loginInput} type="password" placeholder='password'{...register("password", { required: true })} />
           {errorAuth !== ''
             ?
             errors.password && <span> {errorAuth}</span>
@@ -63,7 +66,7 @@ export const Login: React.FC = () => {
             captcha !== '' && <img src={captcha} alt="Captcha" />
           }
           {
-            captcha !== '' && <input type="captcha" placeholder='captcha'{...register("captcha", { required: true })} />
+            captcha !== '' && <input  type="captcha" placeholder='captcha'{...register("captcha", { required: true })} />
           }
         </div>
 
@@ -75,7 +78,7 @@ export const Login: React.FC = () => {
           />
         </div>
         <div>
-          <button >Login</button>
+          <Button onClick={handleSubmit(onSubmit)} htmlType='submit' >Login</Button>
         </div>
       </form>
     </>

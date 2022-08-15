@@ -47,6 +47,9 @@
   font-size: 22px;
   color: #fff;
 }
+.paginator {
+  margin: 10px 0 10px 0;
+}
 .pages {
   font-size: 18px;
   cursor: pointer;

@@ -1,0 +1,10 @@
+.loginInput {
+  width: 100%;
+  margin-bottom: 5px;
+  border: 1.5px solid rgb(91, 105, 161)!important;
+  outline: none;
+
+}
+.loginInput::selection {
+color: none;
+}
